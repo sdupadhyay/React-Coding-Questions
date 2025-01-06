@@ -1,7 +1,5 @@
 import React from "react";
-import { useState } from "react";
-import Box from "./questons/Box";
-function App() {
+export default function Box() {
   const boxAData = [
     { item: "Pen", id: 1 },
     { item: "Pencil", id: 2 },
@@ -14,7 +12,7 @@ function App() {
   ];
   const [boxA, setBoxA] = React.useState(boxAData);
   const [boxB, setBoxB] = React.useState(boxBData);
-  const [checkedBox, setCheckedBox] = useState([]);
+  const [checkedBox, setCheckedBox] = React.useState([]);
   const handleChange = (e, id) => {
     if (checkedBox.includes(id)) {
       setCheckedBox(checkedBox.filter((ele) => ele !== id));
@@ -38,12 +36,50 @@ function App() {
     setCheckedBox([]);
   };
   return (
-    <>
-      <Box />
-    </>
+    <div className="flex justify-center items-center gap-4">
+      <div className="p-4 bg-gray-200 rounded-lg w-48 flex flex-col gap-2">
+        {boxA.map((ele) => (
+          <InputCheckBox
+            key={ele.id}
+            value={ele.item}
+            id={ele.id}
+            checked={checkedBox.includes(ele.id)}
+            handleChange={handleChange}
+          />
+        ))}
+        <button
+          onClick={() => handleClick(boxA, boxB, setBoxA, setBoxB, checkedBox)}
+          className="border"
+        >
+          Move from A to B
+        </button>
+      </div>
+      <div className="p-4 bg-gray-200 rounded-lg w-48 flex flex-col gap-2">
+        {boxB.map((ele) => (
+          <InputCheckBox
+            key={ele.id}
+            value={ele.item}
+            id={ele.id}
+            checked={checkedBox.includes(ele.id)}
+            handleChange={handleChange}
+          />
+        ))}
+        <button
+          onClick={() => handleClick(boxB, boxA, setBoxB, setBoxA, checkedBox)}
+          className="border"
+        >
+          Move from B to A
+        </button>
+      </div>
+    </div>
   );
 }
-const InputCheckBox = ({ value, id, checked, handleChange }) => {
+const InputCheckBox = ({
+  value = "",
+  id = "",
+  checked = "",
+  handleChange = () => {},
+}) => {
   return (
     <>
       <input
@@ -59,4 +95,3 @@ const InputCheckBox = ({ value, id, checked, handleChange }) => {
     </>
   );
 };
-export default App;
